@@ -150,7 +150,7 @@ function calculateCumulativeProbabilities(
     (a, b) => a - b,
   );
 
-  let exactlyCount = distribution.combinations.get(target) || 0;
+  const exactlyCount = distribution.combinations.get(target) || 0;
   let atLeastCount = 0;
   let atMostCount = 0;
 
@@ -168,7 +168,7 @@ function calculateCumulativeProbabilities(
     exactly: exactlyCount / distribution.totalCombinations,
   };
 }
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -480,7 +480,9 @@ function DistributionTable({
                   <div className="flex items-center">
                     <div
                       className="h-2 mr-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
-                      style={{ width: `${Math.max(percentage * 3, 4)}px` }}
+                      style={{
+                        width: `${Math.max(parseFloat(percentage) * 3, 4)}px`,
+                      }}
                     ></div>
                     <span className="text-gray-700">{percentage}%</span>
                   </div>
@@ -825,10 +827,7 @@ function DiceDistributionCalculator() {
                   tick={{ fill: "#6B7280" }}
                 />
                 <Tooltip
-                  formatter={(value: any, name: string) => [
-                    `${value}%`,
-                    "Probability",
-                  ]}
+                  formatter={(value: any) => [`${value}%`, "Probability"]}
                   labelFormatter={(label) => `Sum: ${label}`}
                   contentStyle={{
                     borderRadius: "8px",
@@ -847,7 +846,7 @@ function DiceDistributionCalculator() {
                   animationDuration={500}
                   barSize={20}
                   shape={(props: any) => {
-                    const { x, y, width, height, fill } = props;
+                    const { x, y, width, height } = props;
                     const dataItem = chartData[props.index];
                     const barFill =
                       dataItem.sum === targetValue ? "#FBBF24" : "#4F46E5";
